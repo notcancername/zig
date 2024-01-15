@@ -3649,7 +3649,7 @@ fn check(args: anytype) !void {
       </p>
       <p>
       Like arrays, tuples have a .len field, can be indexed (provided the index is comptime-known)
-      and work with the ++ and ** operators. They can also be iterated over with {#link|inline for#}.
+      and work with the ++ and ** operators. They can be destructured, and iterated over with {#link|inline for#}.
       </p>
       {#code_begin|test|test_tuples#}
 const std = @import("std");
@@ -3664,6 +3664,15 @@ test "tuple" {
     } ++ .{false} ** 2;
     try expect(values[0] == 1234);
     try expect(values[4] == false);
+
+    const a, var b, const c, const d, const e, const f = values;
+    try expect(values[0] == a);
+    try expect(values[1] == b);
+    try expect(values[2] == c);
+    try expect(values[3] == d);
+    try expect(values[4] == e);
+    try expect(values[5] == f);
+
     inline for (values, 0..) |v, i| {
         if (i != 2) continue;
         try expect(v);
